@@ -2,6 +2,7 @@
 
 namespace AlterPHP\EasyAdminExtensionBundle\DependencyInjection;
 
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -47,6 +48,23 @@ class Configuration implements ConfigurationInterface
             ->end()
         ;
 
+        $this->addDocumentsSection($rootNode);
+
         return $treeBuilder;
+    }
+
+    private function addDocumentsSection(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('documents')
+                    ->normalizeKeys(false)
+                    ->useAttributeAsKey('name', false)
+                    ->defaultValue(array())
+                    ->info('The list of documents to manage in the administration zone.')
+                    ->prototype('variable')
+                ->end()
+            ->end()
+        ;
     }
 }
